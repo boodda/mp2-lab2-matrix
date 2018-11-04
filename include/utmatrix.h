@@ -120,6 +120,18 @@ bool TVector<ValType>::operator!=(const TVector &v) const
 template <class ValType> // присваивание
 TVector<ValType>& TVector<ValType>::operator=(const TVector &v)
 {
+  if(this==&v) return *this;
+  delete[] pVector;
+  pVector = new ValType[v.Size];
+  if(pVector==nullptr){
+    throw "Недостаточно памяти";
+  }
+  for(int i=0;i<v.Size;i++){
+    pVector[i] = v.pVector[i];
+  }
+  Size = v.Size;
+  StartIndex = v.StartIndex;
+
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // прибавить скаляр
