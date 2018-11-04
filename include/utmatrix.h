@@ -87,11 +87,17 @@ TVector<ValType>::TVector(const TVector<ValType> &v)
 template <class ValType>
 TVector<ValType>::~TVector()
 {
+  delete[] pVector;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int pos)
 {
+  int respos = pos - StartIndex;
+  if (respos<0 || respos>=Size){
+    throw "Некорректный индекс";
+  }
+  return pVector[respos];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение
