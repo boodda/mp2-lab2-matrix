@@ -62,11 +62,26 @@ public:
 template <class ValType>
 TVector<ValType>::TVector(int s, int si)
 {
+  pVector = new ValType[s];
+  if(pVector==nullptr){
+    throw "Недостаточно памяти";
+  }
+  Size = s;
+  StartIndex = si;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> //конструктор копирования
 TVector<ValType>::TVector(const TVector<ValType> &v)
 {
+  pVector = new ValType[v.Size];
+  if(pVector==nullptr){
+    throw "Недостаточно памяти";
+  }
+  for(int i=0;i<v.Size;i++){
+    pVector[i] = v.pVector[i];
+  }
+  Size = v.Size;
+  StartIndex = v.StartIndex;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType>
