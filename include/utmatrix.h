@@ -167,16 +167,35 @@ TVector<ValType> TVector<ValType>::operator*(const ValType &val)
 template <class ValType> // сложение
 TVector<ValType> TVector<ValType>::operator+(const TVector<ValType> &v)
 {
+  if (Size!=v.Size || StartIndex!=v.StartIndex) throw "Размеры должны быть одинаковыми";
+  TVector<ValType> res(*this);
+  for(int i=0;i<Size;i++){
+    res.pVector[i]+=v.pVector[i];
+  }
+  return res;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычитание
 TVector<ValType> TVector<ValType>::operator-(const TVector<ValType> &v)
 {
+  if (Size!=v.Size || StartIndex!=v.StartIndex) throw "Размеры должны быть одинаковыми";
+  TVector<ValType> res(*this);
+  for(int i=0;i<Size;i++){
+    res.pVector[i]-=v.pVector[i];
+  }
+  return res;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // скалярное произведение
 ValType TVector<ValType>::operator*(const TVector<ValType> &v)
 {
+  if (Size!=v.Size || StartIndex!=v.StartIndex) throw "Размеры должны быть одинаковыми";
+  ValType res=0;
+  for(int i=0;i<Size;i++){
+    res+=v.pVector[i]*pVector[i];
+  }
+  return res;
+
 } /*-------------------------------------------------------------------------*/
 
 
