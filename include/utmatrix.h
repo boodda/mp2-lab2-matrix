@@ -29,7 +29,7 @@ public:
   ~TVector();
   int GetSize()      { return Size;       } // размер вектора
   int GetStartIndex(){ return StartIndex; } // индекс первого элемента
-  ValType& operator[](int pos);             // доступ
+  ValType& operator[](int pos) const;             // доступ
   bool operator==(const TVector &v) const;  // сравнение
   bool operator!=(const TVector &v) const;  // сравнение
   TVector& operator=(const TVector &v);     // присваивание
@@ -67,6 +67,9 @@ template <class ValType>
 TVector<ValType>::TVector(int s, int si)
 {
   pVector = new ValType[s];
+  for(int i=0;i<s;i++){
+    pVector[i] = ValType();
+  }
   if(pVector==nullptr){
     throw "Недостаточно памяти";
   }
@@ -95,7 +98,7 @@ TVector<ValType>::~TVector()
 }  
 
 template <class ValType> // доступ
-ValType& TVector<ValType>::operator[](int pos)
+ValType& TVector<ValType>::operator[](int pos) const
 {
   int respos = pos - StartIndex;
   if (respos<0 || respos>=Size){
@@ -216,6 +219,7 @@ public:
   TMatrix& operator= (const TMatrix &mt);        // присваивание
   TMatrix  operator+ (const TMatrix &mt);        // сложение
   TMatrix  operator- (const TMatrix &mt);        // вычитание
+  TMatrix operator* (const TMatrix &mt);
 
   // ввод / вывод
   friend istream& operator>>(istream &in, TMatrix &mt)
@@ -243,6 +247,29 @@ public:
     return out;
   }
 };
+
+
+template <class ValType> 
+TMatrix<ValType> TMatrix<ValType>::operator*(const TMatrix<ValType> &mt)
+{
+  if ((TVector<TVector<ValType>>::Size)!=mt.Size || (TVector<TVector<ValType>>::StartIndex)!=mt.StartIndex) throw "Размеры должны быть одинаковыми";
+  TMatrix<ValType> res(mt.Size);
+  for(int i=0;i<mt.Size;i++){
+   // cout<<i<<"~"<<endl;
+    for(int j=i;j<mt.Size;j++){
+      //cout<<i<<"~"<<j<<"~"<<endl;
+      for(int k=0;k<=mt.Size;k++){
+        try{
+          res[i][j] += (*this)[i][k]*mt[k][j];
+        }
+        catch(const char* e){
+          
+        }
+      }
+    }
+  }
+  return res;
+}  
 
 template <class ValType>
 TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >(s)
